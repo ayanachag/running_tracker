@@ -1,0 +1,716 @@
+.viewport {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 0;
+  background: linear-gradient(180deg, #fafcff 0%, #f1f6fa 100%);
+}
+
+.screen {
+  position: relative;
+  width: 440px;
+  height: 956px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #101521;
+}
+
+.screen img {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+.bg {
+  left: 0;
+  top: 0;
+  width: 440px;
+  height: 956px;
+}
+
+.status-time {
+  position: absolute;
+  left: 30px;
+  top: 22px;
+  height: 17px;
+  margin: 0;
+  color: #171b18;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  z-index: 3;
+}
+
+.status-icons {
+  left: 370px;
+  top: 25px;
+  width: 40.5px;
+  height: 11.5px;
+  z-index: 3;
+}
+
+.title {
+  position: absolute;
+  left: 29px;
+  top: 51px;
+  height: 40px;
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 40px;
+  z-index: 3;
+}
+
+.loc-btn,
+.settings-btn,
+.lock-btn,
+.pause-btn,
+.stop-btn {
+  position: absolute;
+  z-index: 4;
+}
+
+.loc-btn {
+  left: 325px;
+  top: 51px;
+  width: 40px;
+  height: 40px;
+}
+
+.loc-btn img,
+.settings-btn img,
+.lock-btn img,
+.pause-btn img,
+.stop-btn img {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loc-icon {
+  width: 15.7143px;
+  height: 20px;
+}
+
+.settings-btn {
+  left: 370px;
+  top: 51px;
+  width: 40px;
+  height: 40px;
+}
+
+.settings-btn img {
+  width: 40px;
+  height: 40px;
+}
+
+.loc-btn > img:first-child {
+  width: 40px;
+  height: 40px;
+}
+
+.live-dot {
+  left: 29px;
+  top: 101px;
+  width: 10px;
+  height: 10px;
+  z-index: 3;
+}
+
+.live-label {
+  position: absolute;
+  left: 46px;
+  top: 98px;
+  height: 15px;
+  color: #8a9ab0;
+  font-size: 13px;
+  line-height: 15px;
+  z-index: 3;
+}
+
+.card {
+  z-index: 1;
+  filter: drop-shadow(0 10px 22px rgba(16, 33, 56, 0.07));
+}
+
+.card-stats {
+  left: 30px;
+  top: 132px;
+  width: 380px;
+  height: 195px;
+}
+
+.card-route {
+  left: 30px;
+  top: 340px;
+  width: 380px;
+  height: 220px;
+}
+
+.card-pace {
+  left: 30px;
+  top: 574px;
+  width: 380px;
+  height: 171px;
+}
+
+.card-params {
+  left: 30px;
+  top: 758px;
+  width: 380px;
+  height: 99px;
+}
+
+.ring {
+  position: absolute;
+  left: 251.51px;
+  top: 156.5px;
+  width: 145px;
+  height: 145.423px;
+  z-index: 2;
+  overflow: visible;
+}
+
+.progress-label,
+.progress-value,
+.progress-sub,
+.kicker,
+.elapsed,
+.stat,
+.stat-label,
+.stops-dot,
+.section-title,
+.pace-unit,
+.axis,
+.tooltip-value,
+.params-title,
+.param-label,
+.param-value,
+.mode {
+  position: absolute;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+.progress-label,
+.progress-value,
+.progress-sub {
+  text-align: center;
+}
+
+.progress-label {
+  left: 296px;
+  top: 195px;
+  width: 57px;
+  height: 15px;
+  color: #8a9ab0;
+  font-size: 13px;
+  line-height: 15px;
+}
+
+.progress-value {
+  left: 296px;
+  top: 213px;
+  width: 57px;
+  height: 32px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.progress-sub {
+  left: 284px;
+  top: 248px;
+  width: 80px;
+  height: 13px;
+  color: #8a9ab0;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.kicker {
+  left: 46px;
+  top: 146px;
+  height: 15px;
+  color: #8a9ab0;
+  font-size: 13px;
+  line-height: 15px;
+}
+
+.elapsed {
+  left: 46px;
+  top: 162px;
+  height: 51px;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 51px;
+  letter-spacing: -0.5px;
+}
+
+.stat {
+  font-weight: 700;
+  line-height: 26px;
+}
+
+.distance {
+  left: 46px;
+  top: 222px;
+  height: 26px;
+  font-size: 23px;
+}
+
+.calories {
+  left: 168px;
+  top: 222px;
+  height: 26px;
+  font-size: 23px;
+  line-height: 26px;
+}
+
+.distance span,
+.pace span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pace {
+  left: 46px;
+  top: 274px;
+  height: 24px;
+  font-size: 21px;
+  line-height: 24px;
+}
+
+.stops {
+  left: 168px;
+  top: 274px;
+  height: 24px;
+  font-size: 21px;
+  line-height: 24px;
+}
+
+.stops-dot {
+  left: 184px;
+  top: 277px;
+  height: 15px;
+  color: #ff575e;
+  font-size: 13px;
+  line-height: 15px;
+}
+
+.stat-label {
+  height: 13px;
+  color: #8a9ab0;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.distance-label,
+.calories-label {
+  top: 252px;
+}
+
+.distance-label {
+  left: 46px;
+}
+
+.calories-label {
+  left: 168px;
+}
+
+.pace-label,
+.stops-label {
+  top: 301px;
+}
+
+.pace-label {
+  left: 46px;
+}
+
+.stops-label {
+  left: 168px;
+}
+
+.section-title {
+  height: 22px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.route-title {
+  left: 46px;
+  top: 350px;
+}
+
+.pace-title {
+  left: 45px;
+  top: 584px;
+}
+
+.pace-unit {
+  left: 355px;
+  top: 588px;
+  width: 39px;
+  height: 14px;
+  color: #8a9ab0;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: right;
+}
+
+.toggle-pill {
+  left: 260px;
+  top: 350px;
+  width: 56px;
+  height: 24px;
+  z-index: 2;
+  transition: left 0.16s ease;
+}
+
+.toggle-pill.is-satellite {
+  left: 323px;
+}
+
+.mode {
+  top: 355px;
+  height: 13px;
+  padding: 0;
+  color: #8a9ab0;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+}
+
+.mode.is-active {
+  color: #089a42;
+}
+
+.mode-map {
+  left: 273px;
+  width: 30px;
+}
+
+.mode-sat {
+  left: 330px;
+  width: 42px;
+}
+
+.map-clip {
+  position: absolute;
+  left: 46px;
+  top: 384px;
+  width: 348px;
+  height: 165px;
+  z-index: 2;
+  overflow: hidden;
+  -webkit-mask-image: url("./assets/map-mask.svg");
+  mask-image: url("./assets/map-mask.svg");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 348px 165px;
+  mask-size: 348px 165px;
+}
+
+.map,
+.map-track {
+  left: -37.76px;
+  top: -25.08px;
+  width: 418.923px;
+  height: 206.521px;
+}
+
+.map-track {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.map-clip.is-satellite .map {
+  filter: saturate(0.55) contrast(1.05) brightness(0.92);
+}
+
+.chart-grid {
+  left: 75px;
+  top: 624.53px;
+  width: 319px;
+  height: 88px;
+  z-index: 2;
+}
+
+.chart-fill {
+  left: 75px;
+  top: 610px;
+  width: 319px;
+  height: 103px;
+  z-index: 2;
+}
+
+.chart-line {
+  left: 73.74px;
+  top: 608.52px;
+  width: 321.531px;
+  height: 88.0047px;
+  z-index: 2;
+}
+
+.chart-motion {
+  position: absolute;
+  left: 73.74px;
+  top: 608.52px;
+  width: 321.531px;
+  height: 88.0047px;
+  z-index: 3;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.tooltip {
+  left: 329px;
+  top: 627px;
+  width: 45px;
+  height: 23px;
+  z-index: 4;
+}
+
+.tooltip-value {
+  left: 329px;
+  top: 631px;
+  width: 45px;
+  height: 14px;
+  color: #0a9d40;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+  z-index: 4;
+}
+
+.axis {
+  height: 13px;
+  color: #101521;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.y8 {
+  left: 45px;
+  top: 621px;
+}
+
+.y6 {
+  left: 45px;
+  top: 650px;
+}
+
+.y4 {
+  left: 45px;
+  top: 679px;
+}
+
+.y2 {
+  left: 45px;
+  top: 708px;
+}
+
+.x0 {
+  left: 75px;
+  top: 721px;
+}
+
+.x10 {
+  left: 150px;
+  top: 721px;
+}
+
+.x20 {
+  left: 254px;
+  top: 721px;
+}
+
+.x30 {
+  left: 358px;
+  top: 721px;
+}
+
+.params-title {
+  left: 46px;
+  top: 768px;
+  height: 20px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.param-label,
+.param-value {
+  text-align: center;
+}
+
+.param-label {
+  top: 798px;
+  height: 14px;
+  color: #8a9ab0;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.param-value {
+  top: 819px;
+  height: 21px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.param-distance-label {
+  left: 46px;
+  width: 60px;
+}
+
+.param-distance {
+  left: 58px;
+  width: 36px;
+}
+
+.param-time-label {
+  left: 163px;
+  width: 37px;
+}
+
+.param-time {
+  left: 158px;
+  width: 47px;
+}
+
+.param-pace-label {
+  left: 261px;
+  width: 29px;
+}
+
+.param-pace {
+  left: 257px;
+  width: 37px;
+}
+
+.param-cal-label {
+  left: 346px;
+  width: 48px;
+}
+
+.param-cal {
+  left: 355px;
+  width: 31px;
+}
+
+.lock-btn {
+  left: 95px;
+  top: 878px;
+  width: 46px;
+  height: 46px;
+  filter: drop-shadow(0 8px 16px rgba(16, 21, 33, 0.08));
+}
+
+.lock-btn img:first-child {
+  width: 46px;
+  height: 46px;
+}
+
+.lock-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.pause-btn {
+  left: 191px;
+  top: 870px;
+  width: 62px;
+  height: 62px;
+  animation: play-pulse 1.7s ease-in-out infinite;
+}
+
+.pause-btn::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: rgba(86, 206, 52, 0.4);
+  transform: translate(-50%, -50%);
+  animation: play-halo 1.7s ease-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.pause-btn img {
+  width: 62px;
+  height: 62px;
+}
+
+@keyframes play-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 8px 12px rgba(56, 198, 45, 0.28));
+  }
+
+  50% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 14px 22px rgba(56, 198, 45, 0.55));
+  }
+}
+
+@keyframes play-halo {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}
+
+.stop-btn {
+  left: 303px;
+  top: 878px;
+  width: 46px;
+  height: 46px;
+  filter: drop-shadow(0 8px 16px rgba(16, 21, 33, 0.08));
+}
+
+.stop-btn img {
+  width: 46px;
+  height: 46px;
+}
+
+.lock-btn.is-on {
+  transform: scale(0.96);
+}
+
+.loc-btn:active,
+.settings-btn:active,
+.stop-btn:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 439px) {
+  .viewport {
+    align-items: flex-start;
+    height: calc(956 * 100vw / 440);
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .screen {
+    transform: scale(calc(100vw / 440px));
+    transform-origin: top center;
+  }
+}
