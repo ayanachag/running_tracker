@@ -32,6 +32,12 @@ const PACE_PATH =
 const ROUTE_PATH =
   "M76.2159 152.09C105.521 181.09 121.09 124.09 157.721 130.09C194.353 136.09 205.342 154.09 237.395 119.09C269.448 84.0895 272.195 73.0895 303.332 84.0895C334.469 95.0895 346.374 103.09 360.111 60.0895";
 
+const START_SECONDS = 0;
+const START_KM = 0;
+const START_KCAL = 0;
+const SECONDS_PER_KM = 50;
+const KCAL_PER_KM = 412 / 5.24;
+
 function formatPace(screenY) {
   const minutes = Math.min(8, Math.max(2, 8 - (screenY - PACE_AXIS_TOP) / PACE_PX_PER_MIN));
   let whole = Math.floor(minutes);
@@ -41,6 +47,29 @@ function formatPace(screenY) {
     seconds = 0;
   }
   return `${whole}:${String(seconds).padStart(2, "0")}`;
+}
+
+function formatClock(totalSeconds) {
+  const seconds = Math.max(0, Math.floor(totalSeconds));
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const rest = seconds % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
+}
+
+function formatShortTime(totalSeconds) {
+  const seconds = Math.max(0, Math.floor(totalSeconds));
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const rest = seconds % 60;
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
+  }
+  return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
+}
+
+function formatKm(km) {
+  return Math.max(0, km).toFixed(2).replace(".", ",");
 }
 
 export default function App() {
@@ -58,6 +87,12 @@ export default function App() {
   const tooltipValueRef = useRef(null);
   const routePathRef = useRef(null);
   const runnerRef = useRef(null);
+  const elapsedRef = useRef(null);
+  const distanceRef = useRef(null);
+  const caloriesRef = useRef(null);
+  const paramDistanceRef = useRef(null);
+  const paramTimeRef = useRef(null);
+  const paramCaloriesRef = useRef(null);
 
   useEffect(() => {
     pausedRef.current = paused;
@@ -75,7 +110,10 @@ export default function App() {
       last = now;
 
       const t = elapsed / 1000;
-      const progress = 64 + Math.sin(t * 0.85) * 14;
+      const runSeconds = Math.max(0, START_SECONDS + t);
+      const km = Math.max(0, START_KM + t / SECONDS_PER_KM);
+      const kcal = Math.round(START_KCAL + (km - START_KM) * KCAL_PER_KM);
+      const progress = Math.min(100, (km / 8) * 100);
       const dash = (progress / 100) * RING_LENGTH;
       arcRef.current?.setAttribute("stroke-dasharray", `${dash} ${RING_LENGTH}`);
 
@@ -83,9 +121,14 @@ export default function App() {
         progressValueRef.current.textContent = `${Math.round(progress)}%`;
       }
       if (progressSubRef.current) {
-        const km = ((progress / 100) * 8).toFixed(2).replace(".", ",");
-        progressSubRef.current.textContent = `${km} / 8 км`;
+        progressSubRef.current.textContent = `${formatKm(km)} / 8 км`;
       }
+      if (elapsedRef.current) elapsedRef.current.textContent = formatClock(runSeconds);
+      if (distanceRef.current) distanceRef.current.textContent = formatKm(km);
+      if (caloriesRef.current) caloriesRef.current.textContent = String(kcal);
+      if (paramDistanceRef.current) paramDistanceRef.current.textContent = formatKm(km);
+      if (paramTimeRef.current) paramTimeRef.current.textContent = formatShortTime(runSeconds);
+      if (paramCaloriesRef.current) paramCaloriesRef.current.textContent = String(kcal);
 
       const shift = Math.sin(t * 0.65) * 18;
       gradientRef.current?.setAttribute("x1", String(6.5 + shift));
@@ -96,7 +139,7 @@ export default function App() {
       const pacePath = pacePathRef.current;
       if (pacePath && paceDotRef.current && tooltipRef.current && tooltipValueRef.current) {
         const paceLength = pacePath.getTotalLength();
-        const paceT = (Math.sin(t * 0.55 - Math.PI / 2) + 1) / 2;
+        const paceT = (Math.sin(t * 0.05 - Math.PI / 2) + 1) / 2;
         const pacePoint = pacePath.getPointAtLength(paceLength * paceT);
         const screenX = CHART_LEFT + pacePoint.x;
         const screenY = CHART_TOP + pacePoint.y;
@@ -116,7 +159,7 @@ export default function App() {
       const routePath = routePathRef.current;
       if (routePath && runnerRef.current) {
         const routeLength = routePath.getTotalLength();
-        const routeT = (Math.sin(t * 0.38 - Math.PI / 2) + 1) / 2;
+        const routeT = (Math.sin(t * 0.035 - Math.PI / 2) + 1) / 2;
         const routePoint = routePath.getPointAtLength(routeLength * routeT);
         runnerRef.current.setAttribute("cx", String(routePoint.x));
         runnerRef.current.setAttribute("cy", String(routePoint.y));
@@ -208,25 +251,29 @@ export default function App() {
             stroke="url(#ringGrad)"
             strokeWidth="13"
             strokeLinecap="round"
-            strokeDasharray={`${RING_LENGTH * 0.64} ${RING_LENGTH}`}
+            strokeDasharray={`0 ${RING_LENGTH}`}
             transform="rotate(-90 72.5 72.5)"
           />
         </svg>
         <p className="progress-label">Прогресс</p>
         <p className="progress-value" ref={progressValueRef}>
-          64%
+          0%
         </p>
         <p className="progress-sub" ref={progressSubRef}>
-          5,24 / 8 км
+          0,00 / 8 км
         </p>
 
         <p className="kicker">Время бега</p>
-        <p className="elapsed">00:32:18</p>
+        <p className="elapsed" ref={elapsedRef}>
+          00:00:00
+        </p>
         <p className="stat distance">
-          5,24 <span>км</span>
+          <span ref={distanceRef}>0,00</span> <span className="unit">км</span>
         </p>
         <p className="stat-label distance-label">Дистанция</p>
-        <p className="stat calories">412</p>
+        <p className="stat calories" ref={caloriesRef}>
+          0
+        </p>
         <p className="stat-label calories-label">Калории</p>
         <p className="stat pace">
           6:09 <span>мин/км</span>
@@ -380,13 +427,19 @@ export default function App() {
         />
         <h2 className="params-title">Параметры тренировки</h2>
         <p className="param-label param-distance-label">Дистанция</p>
-        <p className="param-value param-distance">5,24</p>
+        <p className="param-value param-distance" ref={paramDistanceRef}>
+          0,00
+        </p>
         <p className="param-label param-time-label">Время</p>
-        <p className="param-value param-time">32:18</p>
+        <p className="param-value param-time" ref={paramTimeRef}>
+          00:00
+        </p>
         <p className="param-label param-pace-label">Темп</p>
         <p className="param-value param-pace">6:09</p>
         <p className="param-label param-cal-label">Калории</p>
-        <p className="param-value param-cal">412</p>
+        <p className="param-value param-cal" ref={paramCaloriesRef}>
+          0
+        </p>
 
         <button
           className={locked ? "lock-btn is-on" : "lock-btn"}
@@ -407,7 +460,13 @@ export default function App() {
         >
           <img src={pauseIcon} alt="" width="62" height="62" />
         </button>
-        <button className="stop-btn" type="button" aria-label="Стоп">
+        <button
+          className={paused ? "stop-btn is-on" : "stop-btn"}
+          type="button"
+          aria-label={paused ? "Продолжить" : "Стоп"}
+          aria-pressed={paused}
+          onClick={() => setPaused((value) => !value)}
+        >
           <img src={stopIcon} alt="" width="46" height="46" />
         </button>
       </article>

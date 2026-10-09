@@ -269,7 +269,7 @@
   line-height: 26px;
 }
 
-.distance span,
+.distance .unit,
 .pace span {
   font-size: 12px;
   font-weight: 700;
@@ -690,7 +690,8 @@
   height: 46px;
 }
 
-.lock-btn.is-on {
+.lock-btn.is-on,
+.stop-btn.is-on {
   transform: scale(0.96);
 }
 
