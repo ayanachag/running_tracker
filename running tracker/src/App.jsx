@@ -98,9 +98,12 @@ function buildRhythmPath() {
 const RHYTHM_PATH = buildRhythmPath();
 const RHYTHM_START = rhythmPoint(0);
 
-function bpmFromRadius(radius) {
-  const bpm = 118 + ((radius - 48) / 30) * 50;
-  return Math.round(Math.min(168, Math.max(112, bpm)));
+function rhythmScaleValue(x, y) {
+  const angle = Math.atan2(y - 100, x - 100);
+  let fromTop = angle + Math.PI / 2;
+  if (fromTop < 0) fromTop += Math.PI * 2;
+  const value = Math.round((fromTop / (Math.PI * 2)) * 300);
+  return value > 300 ? 0 : value;
 }
 
 export default function App() {
@@ -207,9 +210,10 @@ export default function App() {
         const rhythmPointOnPath = rhythmPath.getPointAtLength(rhythmLength * rhythmT);
         rhythmDotRef.current.setAttribute("cx", String(rhythmPointOnPath.x));
         rhythmDotRef.current.setAttribute("cy", String(rhythmPointOnPath.y));
-        const radius = Math.hypot(rhythmPointOnPath.x - 100, rhythmPointOnPath.y - 100);
         if (rhythmValueRef.current) {
-          rhythmValueRef.current.textContent = String(bpmFromRadius(radius));
+          rhythmValueRef.current.textContent = String(
+            rhythmScaleValue(rhythmPointOnPath.x, rhythmPointOnPath.y),
+          );
         }
       }
       if (rhythmGradRef.current) {
@@ -527,17 +531,17 @@ export default function App() {
               stroke="#ffffff"
               strokeWidth="2"
             />
-            <text x="100" y="18" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
-              0
+            <text x="182" y="74" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              60
             </text>
-            <text x="186" y="104" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
-              10
+            <text x="151" y="170" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              120
             </text>
-            <text x="100" y="180" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
-              20
+            <text x="49" y="170" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              180
             </text>
-            <text x="14" y="104" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
-              30
+            <text x="18" y="74" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              240
             </text>
             <text
               ref={rhythmValueRef}
@@ -549,7 +553,7 @@ export default function App() {
               fontWeight="700"
               fontFamily="Arial"
             >
-              {bpmFromRadius(RHYTHM_START.radius)}
+              {rhythmScaleValue(RHYTHM_START.x, RHYTHM_START.y)}
             </text>
             <text x="100" y="116" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
               сейчас
