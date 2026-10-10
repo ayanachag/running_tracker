@@ -10,11 +10,12 @@
 .screen {
   position: relative;
   width: 440px;
-  height: 956px;
+  height: 1206px;
   flex: 0 0 auto;
   overflow: hidden;
   font-family: Arial, Helvetica, sans-serif;
   color: #101521;
+  background: #f1f6fa;
 }
 
 .screen img {
@@ -606,9 +607,51 @@
   width: 31px;
 }
 
+.rhythm-card {
+  position: absolute;
+  left: 30px;
+  top: 871px;
+  width: 380px;
+  height: 232px;
+  background: #fff;
+  border-radius: 24px;
+  z-index: 1;
+  filter: drop-shadow(0 10px 22px rgba(16, 33, 56, 0.07));
+}
+
+.rhythm-title {
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  height: 22px;
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.rhythm-unit {
+  position: absolute;
+  right: 16px;
+  top: 18px;
+  margin: 0;
+  color: #8a9ab0;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.rhythm-chart {
+  position: absolute;
+  left: 96px;
+  top: 36px;
+  width: 188px;
+  height: 178px;
+  overflow: visible;
+}
+
 .lock-btn {
   left: 95px;
-  top: 878px;
+  top: 1128px;
   width: 46px;
   height: 46px;
   filter: drop-shadow(0 8px 16px rgba(16, 21, 33, 0.08));
@@ -626,7 +669,7 @@
 
 .pause-btn {
   left: 191px;
-  top: 870px;
+  top: 1120px;
   width: 62px;
   height: 62px;
   animation: play-pulse 1.7s ease-in-out infinite;
@@ -679,7 +722,7 @@
 
 .stop-btn {
   left: 303px;
-  top: 878px;
+  top: 1128px;
   width: 46px;
   height: 46px;
   filter: drop-shadow(0 8px 16px rgba(16, 21, 33, 0.08));
@@ -704,7 +747,7 @@
 @media (max-width: 439px) {
   .viewport {
     align-items: flex-start;
-    height: calc(956 * 100vw / 440);
+    height: calc(1206 * 100vw / 440);
     min-height: 0;
     padding: 0;
     overflow: hidden;

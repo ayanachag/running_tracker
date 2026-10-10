@@ -72,6 +72,37 @@ function formatKm(km) {
   return Math.max(0, km).toFixed(2).replace(".", ",");
 }
 
+const RHYTHM_SAMPLES = 96;
+
+function rhythmPoint(index) {
+  const t = index / RHYTHM_SAMPLES;
+  const angle = -Math.PI / 2 + t * Math.PI * 2;
+  const wave = Math.sin(t * Math.PI * 6) * 12 + Math.sin(t * Math.PI * 2) * 6;
+  const radius = 62 + wave;
+  return {
+    x: 100 + Math.cos(angle) * radius,
+    y: 100 + Math.sin(angle) * radius,
+    radius,
+  };
+}
+
+function buildRhythmPath() {
+  let path = "";
+  for (let i = 0; i <= RHYTHM_SAMPLES; i += 1) {
+    const point = rhythmPoint(i);
+    path += `${i === 0 ? "M" : "L"}${point.x.toFixed(2)} ${point.y.toFixed(2)}`;
+  }
+  return path;
+}
+
+const RHYTHM_PATH = buildRhythmPath();
+const RHYTHM_START = rhythmPoint(0);
+
+function bpmFromRadius(radius) {
+  const bpm = 118 + ((radius - 48) / 30) * 50;
+  return Math.round(Math.min(168, Math.max(112, bpm)));
+}
+
 export default function App() {
   const [mapMode, setMapMode] = useState("map");
   const [paused, setPaused] = useState(false);
@@ -93,6 +124,10 @@ export default function App() {
   const paramDistanceRef = useRef(null);
   const paramTimeRef = useRef(null);
   const paramCaloriesRef = useRef(null);
+  const rhythmPathRef = useRef(null);
+  const rhythmDotRef = useRef(null);
+  const rhythmValueRef = useRef(null);
+  const rhythmGradRef = useRef(null);
 
   useEffect(() => {
     pausedRef.current = paused;
@@ -163,6 +198,25 @@ export default function App() {
         const routePoint = routePath.getPointAtLength(routeLength * routeT);
         runnerRef.current.setAttribute("cx", String(routePoint.x));
         runnerRef.current.setAttribute("cy", String(routePoint.y));
+      }
+
+      const rhythmPath = rhythmPathRef.current;
+      if (rhythmPath && rhythmDotRef.current) {
+        const rhythmLength = rhythmPath.getTotalLength();
+        const rhythmT = (Math.sin(t * 0.04 - Math.PI / 2) + 1) / 2;
+        const rhythmPointOnPath = rhythmPath.getPointAtLength(rhythmLength * rhythmT);
+        rhythmDotRef.current.setAttribute("cx", String(rhythmPointOnPath.x));
+        rhythmDotRef.current.setAttribute("cy", String(rhythmPointOnPath.y));
+        const radius = Math.hypot(rhythmPointOnPath.x - 100, rhythmPointOnPath.y - 100);
+        if (rhythmValueRef.current) {
+          rhythmValueRef.current.textContent = String(bpmFromRadius(radius));
+        }
+      }
+      if (rhythmGradRef.current) {
+        rhythmGradRef.current.setAttribute("x1", String(20 + shift));
+        rhythmGradRef.current.setAttribute("y1", String(180 - shift * 0.4));
+        rhythmGradRef.current.setAttribute("x2", String(180 - shift));
+        rhythmGradRef.current.setAttribute("y2", String(20 + shift * 0.4));
       }
 
       frame = requestAnimationFrame(tick);
@@ -440,6 +494,68 @@ export default function App() {
         <p className="param-value param-cal" ref={paramCaloriesRef}>
           0
         </p>
+
+        <section className="rhythm-card" aria-label="Ритм">
+          <h2 className="rhythm-title">Ритм ›</h2>
+          <p className="rhythm-unit">уд/мин</p>
+          <svg className="rhythm-chart" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <linearGradient
+                ref={rhythmGradRef}
+                id="rhythmGrad"
+                x1="20"
+                y1="180"
+                x2="180"
+                y2="20"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0" stopColor="#B4E827" />
+                <stop offset="1" stopColor="#38C62D" />
+              </linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="76" fill="none" stroke="#E7EEF1" strokeWidth="1" />
+            <circle cx="100" cy="100" r="62" fill="none" stroke="#E7EEF1" strokeWidth="1" />
+            <circle cx="100" cy="100" r="48" fill="none" stroke="#E7EEF1" strokeWidth="1" />
+            <path d={`${RHYTHM_PATH}Z`} fill="#0AA742" opacity="0.14" />
+            <path ref={rhythmPathRef} d={RHYTHM_PATH} fill="none" stroke="url(#rhythmGrad)" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" />
+            <circle
+              ref={rhythmDotRef}
+              cx={RHYTHM_START.x}
+              cy={RHYTHM_START.y}
+              r="5.5"
+              fill="#0AA742"
+              stroke="#ffffff"
+              strokeWidth="2"
+            />
+            <text x="100" y="18" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              0
+            </text>
+            <text x="186" y="104" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              10
+            </text>
+            <text x="100" y="180" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              20
+            </text>
+            <text x="14" y="104" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              30
+            </text>
+            <text
+              ref={rhythmValueRef}
+              x="100"
+              y="96"
+              textAnchor="middle"
+              fill="#101521"
+              fontSize="28"
+              fontWeight="700"
+              fontFamily="Arial"
+            >
+              {bpmFromRadius(RHYTHM_START.radius)}
+            </text>
+            <text x="100" y="116" textAnchor="middle" fill="#8a9ab0" fontSize="11" fontFamily="Arial">
+              сейчас
+            </text>
+          </svg>
+        </section>
 
         <button
           className={locked ? "lock-btn is-on" : "lock-btn"}
